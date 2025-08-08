@@ -103,12 +103,18 @@ function validateProduct({ PRODUCTNAME, PRICE, STOCK }, maxLength = 100) {
             if (!id) return res.status(400).json({ message: 'Product ID is required' });
 
             const error = validateProduct(req.body);
-            if (error) return res.status(400).json({ message: error });
+            if (error) return res.status(400).json({ message: err.message });
 
             const { PRODUCTNAME, PRICE, STOCK } = req.body;
 
             try {
                 const pool = await poolPromise;
+                const existingProduct = await pool.request()
+                    .input('PRODUCTNAME', mssql.NVarChar, PRODUCTNAME)
+                    .query('SELECT * FROM Products WHERE PRODUCTNAME = @PRODUCTNAME');
+                if(existingProduct.recordset.length > 0){
+                    return res.status(400).json({ message: 'Product with this name already exists' });
+                }
 
                 const result = await pool.request()
                     .input('id', mssql.Int, id)

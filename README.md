@@ -2,6 +2,10 @@
 
 A Node.js + Express REST API for managing products, using SQL Server as a backend.
 
+## Related Projects
+
+- [Product CRUD Flutter App (Frontend)](https://github.com/Ithnoobs/product_crud_app)
+
 ## Features
 
 - CRUD operations for products (`GET`, `POST`, `PUT`, `DELETE`)
